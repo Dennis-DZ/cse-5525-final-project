@@ -151,9 +151,10 @@ def setup_lora(model):
     model = prepare_model_for_kbit_training(model)
     
     # LoRA configuration optimized for code generation
+    # UPDATED: Increased rank for better capacity
     lora_config = LoraConfig(
-        r=16,  # Rank - 16 is good balance
-        lora_alpha=32,  # Alpha scaling
+        r=32,  # Rank - INCREASED from 16 for more capacity
+        lora_alpha=64,  # Alpha scaling - INCREASED proportionally
         target_modules=[
             "q_proj",
             "k_proj", 
@@ -234,21 +235,22 @@ def train_model(model, tokenizer, train_dataset, val_dataset, output_dir="./fine
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     
     # Training arguments optimized for RTX 4060 (8GB VRAM)
+    # UPDATED: Better settings for JSON generation
     training_args = TrainingArguments(
         output_dir=output_dir,
         
-        # Training regime
-        num_train_epochs=5,  # 5 epochs for 900 examples
+        # Training regime - INCREASED for better convergence
+        num_train_epochs=10,  # 10 epochs instead of 5 (need lower loss)
         
         # Batch size - tuned for 8GB VRAM
         per_device_train_batch_size=1,  # Small batch
         per_device_eval_batch_size=1,
         gradient_accumulation_steps=16,  # Effective batch = 16
         
-        # Optimization
-        learning_rate=2e-4,  # Standard for LoRA
+        # Optimization - INCREASED learning rate for faster convergence
+        learning_rate=5e-4,  # Increased from 2e-4 (faster learning)
         weight_decay=0.01,
-        warmup_steps=50,  # ~5% of total steps
+        warmup_steps=100,  # More warmup for stability
         lr_scheduler_type="cosine",
         
         # Memory optimization
