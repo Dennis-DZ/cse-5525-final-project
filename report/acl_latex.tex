@@ -1,0 +1,169 @@
+\documentclass[11pt]{article}
+
+% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
+% Change to "preprint" to generate a non-anonymous version with page numbers.
+\usepackage[final]{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{cuted}
+\usepackage{xcolor} % Useful if you use syntax highlighting colors
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+%Including images in your LaTeX document requires adding
+%additional package(s)
+\usepackage{graphicx}
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{Project Proposal: Efficient Generation of Physics Simulation Specs from Natural Language using Parameter-Efficient Fine-Tuning}
+
+\author{
+    Mason Pacenta, Amitkumar Patil, Dennis Zhitenev \\
+    The Ohio State Univeristy \\
+    \texttt{\{pacenta.12, patil.354, zhitenev.2\}@osu.edu}
+}
+
+\begin{document}
+\maketitle
+
+\section{Problem Statement}
+
+The process of setting up physics simulations often requires manually authoring structured configuration files that define objects, their properties, and the forces that act upon them. This process is time-consuming and requires expert knowledge of the specific simulation schema. Large Language Models (LLMs) present a promising avenue for automating this task by translating high-level, natural-language descriptions into these structured formats.
+
+Our initial explorations, which involved prompting a base LLM with a few examples of \texttt{(natural language, simulation spec)} pairs (a technique known as in-context learning, or ICL), yielded unsatisfactory results. Although the model often produces syntactically valid output, it frequently fails to correctly interpret the semantic content of the prompt. This results in schema with incorrect data, missing objects, or improper relationships between objects. Furthermore, this approach suffers from high inference latency, making it impractical for interactive use. The core problem we aim to address is how to adapt a pretrained LLM to reliably and efficiently translate complex natural language scene descriptions into semantically accurate, schema-compliant simulation configurations.
+
+\section{Proposed Approach}
+
+We propose to fine-tune a pretrained LLM using Low-Rank Adaptation (LoRA), a parameter-efficient fine-tuning (PEFT) technique. This approach is designed to directly address the limitations of the ICL baseline. By embedding a deep understanding of the physics schema and the nuances of spatial language into the model's weights, we hypothesize that we can achieve a significant leap in semantic accuracy and a reduction in inference latency.
+
+The first step of the project is to define a target schema for the 3D physics simulations. Then, using this dataset, create a dataset to train from. We will utilize a large general purpose LLM to bootstrap an initial set of \texttt{(natural language, simulation spec)} pairs, focusing on scenes of increasing complexity. The pairs will be manually reviewed, corrected, and refined to create a high-quality dataset on the order of a thousand instances.
+
+Next, we will select an appropriate open-weight base model (e.g. Llama, Gemma, DeepSeek, etc.) and use the Hugging Face \texttt{PEFT} library to implement LoRA. We will fine-tune the model on our curated dataset. This phase will involve experimentation with the key LoRA hyperparameters (such as rank) to find an optimal configuration.
+
+Lastly, we will conduct an evaluation of our fine-tuned model against an ICL baseline on a held-out test set. Our evaluation will be multifaceted, including quantitative metrics, qualitative error analysis, and performance benchmarks measuring end-to-end latency. A key part of this phase will be developing evaluation metrics to accurately judge generated specs.
+
+\section{Relation to Prior Work}
+
+As described by \citet{huynh2025largelanguagemodelscode}, the use of LLMs for code generation is a well-established field. Our work fits within the sub-domain of translating natural language to domain specific languages or structured data formats.
+
+Our project is grounded in the comparison between in-context learning and fine-tuning. A similar comparison has been done by \citet{10.1145/3708035.3736091} on popular datasets. We will use their work as guidance when doing our comparison.
+
+Crucially, our project is distinct from recent work like LLMPhy \citep{cherian2024llmphycomplexphysicalreasoning}. LLMPhy uses an LLM and a physics simulator within a feedback loop to perform physical reasoning and estimate physical parameters of an existing scene. In contrast, our project focuses on the one-shot generation of a scene’s initial state from a natural language description. The physics simulator in our workflow is a downstream tool, not an integrated component of the LLM’s reasoning process. Our work therefore addresses a different, although related, challenge in the simulation space.
+
+\citet{shafiq2025powersmallllmsgeometry} show that small fine-tuned language models can accurately generate simulation-ready 3D meshes. They focused on generating various 3D meshes directly from a prompt. However, their approach involves generating a script to generate the 3D mesh rather than directly running the simulation task. Their study showed that performance of the fine tuned models degraded when a single prompt consisted of generating multiple shapes. They attribute the performance loss to the lack of training data with multiple geometries. In contrast to this study, our project will not only generate simulation-ready mesh but also generate boundary conditions and material specifications of the simulation.
+
+\citet{ALEXIADIS2024101721} demonstrate the feasibility of integrating LLMs with geometry/mesh generation tools, as well as multiphysics simulation solvers. Their study shows that this approach can enable non-experts to conduct even advanced simulations by simply describing their simulation intents. Using the OpenAI API for their study, their method showed limited success, especially in complex tasks, such as applying boundary conditions, and they intend to use fine-tuning methods in their future work. In contrast, we intend to use fine-tuning methods such as LoRA to train relatively small base models such as Gemma3:4B, and DeepSeek-R1:8B.
+
+\citet{alrashedy2025generatingcadcodevisionlanguage} focus mainly on generating 3D CAD (Computer-Aided Design) code with vision-language models. They studied 3D object accuracy using different base models and zero-shot vs. few-shot methods. GPT-4 few-shot showed 0.965 accuracy while CodeLlama zero-shot showed 0.70 accuracy. This study clearly shows that 3D objects can be accurately generated using language models. However this study only focuses on geometry creation, whereas we intend to generate full simulation models.
+
+\section{Example Workflow}
+The user enters the following text: \textbf{\textit{"Create a brick made of aluminum and apply 100N loads at points X1, X2, .. Xn. Fix the brick at points A1, A2 ... and run the simulation."}}
+
+X and A are set as arbitrary points here. Our proposed tool will generate a simulation-ready spec shown in Listing~\ref{lst:json_code}. This schema will be then used by a 3D geometry generation tool, meshing tool, and physics simulation tools. Figure~\ref{fig:LLM Generated Simulation Ready Model} shows the mesh and boundary conditions generated by a python script based on the Language Model generated schema shown in Listing~\ref{lst:json_code}
+ 
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\columnwidth]{media/Mesh_BC_LOADS.png} 
+    \caption{Language Model to Generate Simulation Ready Model}
+    \label{fig:LLM Generated Simulation Ready Model} 
+\end{figure}
+
+The generated model will be simulated using a Python script that employs solid mechanics models and finite element analysis (not in the scope of this project) to calculate displacement, and mechanical stresses in the model. Figure~\ref{fig:Sim Results} shows the displacement contour plots that our proposed tool will generate.
+
+\begin{figure}[ht!]
+      \centering
+      \includegraphics[width=\columnwidth]{media/CAE Results.png}
+      \caption{Displacement Plot Generated by python based Physics Simulation Script}
+      \label{fig:Sim Results}
+\end{figure}
+
+\section{Summary}
+
+As described, the goal of this study is to develop a tool in which the user only needs to describe their simulation using plain English, and the required results will be presented. Prior research suggests that language models can be used with in-context learning to generate 3D geometries. Our study will explore the use of fine-tuning and leverage existing Python scripts available to simulate the schema generated by a fine-tuned language model.
+    
+\bibliography{custom}
+
+\clearpage 
+\appendix
+
+\begin{figure*}[ht!]
+\begin{lstlisting}[
+    caption={Example simulation spec in JSON format.},
+    label={lst:json_code},
+    columns=fullflexible,
+    breaklines=false,
+    breakatwhitespace=false,
+    frame=single
+]
+{
+  "model_name": "aluminum_brick_multipoint_test",
+  "geometry": {
+    "shape": "box",
+    "parameters": {
+      "lx": 100.0,
+      "ly": 50.0,
+      "lz": 30.0
+    },
+    "location": [0, 0, 0]
+  },
+  "material": {
+    "name": "ALUMINUM",
+    "E": 70000.0,
+    "nu": 0.33
+  },
+  "analysis": {
+    "simulation_type": "Static",
+    "mesh_density": "Medium",
+    
+    "load_condition": {
+      "type": "point_load",
+      "magnitude": 100.0,
+      "direction": 3,
+      "geometric_entity_type": "point_array",
+      "target_spec": [
+        "X1, Y1, Z1",
+        "........",
+        "Xn, Yn, Zn"
+      ]
+    },
+    
+    "boundary_conditions": {
+      "type": "fixed",
+      "dofs": [1, 2, 3],
+      "geometric_entity_type": "point_array",
+      "target_spec": [
+        "A1, B1, C1",
+        "........",
+        "An, Bn, Cn"
+      ]
+    }
+  }
+}
+\end{lstlisting}
+\end{figure*}
+
+\end{document}
