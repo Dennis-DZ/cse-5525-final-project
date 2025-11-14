@@ -1,0 +1,4 @@
+.envrc
+shell.nix
+uv.lock
+.direnv

@@ -316,6 +316,7 @@
     "boundary_conditions": {
       "type": "array",
       "minItems": 1,
+      "ordered": false,
       "items": {
         "type": "object",
         "required": ["type", "location"],
@@ -332,6 +333,7 @@
           "constrained_dofs": {
             "type": "array",
             "description": "Required only if type='custom'. Specifies which DOFs to lock (zero displacement/rotation)",
+            "ordered": false,
             "items": {
               "type": "string",
               "enum": ["ux", "uy", "uz", "rx", "ry", "rz"]
@@ -354,6 +356,7 @@
     "loads": {
       "type": "array",
       "minItems": 1,
+      "ordered": false,
       "items": {
         "type": "object",
         "required": ["type", "magnitude", "location"],

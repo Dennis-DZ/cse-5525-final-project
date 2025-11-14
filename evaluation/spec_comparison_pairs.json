@@ -1,0 +1,863 @@
+[
+	{
+		"pair_id": 1,
+		"description_of_difference": "Material type is changed from STEEL_MILD to ALUMINUM_6061.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "An aluminum box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "ALUMINUM_6061"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 2,
+		"description_of_difference": "Load magnitude is changed from 500N to 750N.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end with a 500N downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A mild steel box fixed on one end with a 750N downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 750,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 3,
+		"description_of_difference": "Load direction is changed from downward [0, 0, -1] to upward [0, 0, 1].",
+		"spec1": {
+			"description": "A titanium cylinder pinned at the base with a downward force.",
+			"geometry": {
+				"type": "cylinder",
+				"dimensions": {
+					"outer_radius": 30,
+					"inner_radius": 0,
+					"height": 150
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "z"
+				}
+			},
+			"material": {
+				"type": "TITANIUM_GR5"
+			},
+			"boundary_conditions": [
+				{
+					"type": "pinned",
+					"location": {
+						"method": "descriptor",
+						"value": "bottom_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 200,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A titanium cylinder pinned at the base with an upward force.",
+			"geometry": {
+				"type": "cylinder",
+				"dimensions": {
+					"outer_radius": 30,
+					"inner_radius": 0,
+					"height": 150
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "z"
+				}
+			},
+			"material": {
+				"type": "TITANIUM_GR5"
+			},
+			"boundary_conditions": [
+				{
+					"type": "pinned",
+					"location": {
+						"method": "descriptor",
+						"value": "bottom_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 200,
+					"direction": [
+						0,
+						0,
+						1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 4,
+		"description_of_difference": "Boundary condition type is changed from 'fixed' to 'pinned'.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A mild steel box pinned on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "pinned",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 5,
+		"description_of_difference": "One geometry dimension (length) is changed from 100 to 110.",
+		"spec1": {
+			"description": "A 100mm long mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A 110mm long mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 110,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 6,
+		"description_of_difference": "Load location is changed from 'top_face' to 'center_point'.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end with a downward force on the top face.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A mild steel box fixed on one end with a downward force at its center point.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "center_point"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 7,
+		"description_of_difference": "Additional (redundant) boundary condition.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A mild steel box fixed on one end and also pinned on the other, with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				},
+				{
+					"type": "pinned",
+					"location": {
+						"method": "descriptor",
+						"value": "right_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 8,
+		"description_of_difference": "Missing almost everything.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box"
+			}
+		}
+	},
+	{
+		"pair_id": 9,
+		"description_of_difference": "Boundary conditions in different order.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end and also pinned on the other, with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "pinned",
+					"location": {
+						"method": "descriptor",
+						"value": "right_face"
+					}
+				},
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		},
+		"spec2": {
+			"description": "A mild steel box fixed on one end and also pinned on the other, with a downward force on the top.",
+			"geometry": {
+				"type": "box",
+				"dimensions": {
+					"length": 100,
+					"width": 50,
+					"height": 20
+				},
+				"origin": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				},
+				"orientation": {
+					"primary_axis": "x"
+				}
+			},
+			"material": {
+				"type": "STEEL_MILD"
+			},
+			"boundary_conditions": [
+				{
+					"type": "fixed",
+					"location": {
+						"method": "descriptor",
+						"value": "left_face"
+					}
+				},
+				{
+					"type": "pinned",
+					"location": {
+						"method": "descriptor",
+						"value": "right_face"
+					}
+				}
+			],
+			"loads": [
+				{
+					"type": "force",
+					"magnitude": 500,
+					"direction": [
+						0,
+						0,
+						-1
+					],
+					"location": {
+						"method": "descriptor",
+						"value": "top_face"
+					}
+				}
+			]
+		}
+	},
+	{
+		"pair_id": 8,
+		"description_of_difference": "Different description.",
+		"spec1": {
+			"description": "A mild steel box fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box"
+			}
+		},
+		"spec2": {
+			"description": "A mild steel cylinder fixed on one end with a downward force on the top.",
+			"geometry": {
+				"type": "box"
+			}
+		}
+	}
+]
