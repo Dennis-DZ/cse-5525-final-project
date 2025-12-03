@@ -1,0 +1,2100 @@
+{
+  "num_shots": 3,
+  "prompt": "Design a petg cone (12mm base radius, pointed tip, and 41mm height). Apply symmetry boundary condition at the bottom center point and apply 4.0MPa pressure on the bottom face.",
+  "expected_json": {
+    "geometry": {
+      "type": "cone",
+      "dimensions": {
+        "bottom_radius": 12,
+        "top_radius": 0,
+        "height": 41
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "PETG"
+    },
+    "boundary_conditions": [
+      {
+        "type": "symmetry",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_center_point"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 4000000,
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "description": "PetG cone with 12mm base radius, 41mm height, and symmetry boundary condition at the bottom center point.",
+    "geometry": {
+      "type": "cone",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "base_radius": 12,
+        "height": 41
+      }
+    },
+    "material": {
+      "type": "PETG"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Symmetry",
+        "type": "symmetry",
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "center"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Pressure",
+        "type": "pressure",
+        "magnitude": 4000000,
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.7878787878787878,
+    "item_f1": 0.7272727272727273,
+    "tree_edit_similarity": 0.8791208791208791
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Model a sphere made of titanium gr5. Dimensions: 21mm outer radius and 4mm wall thickness. Apply symmetry boundary condition at the right face. apply 300N downward force at the top right corner.",
+  "expected_json": {
+    "geometry": {
+      "type": "sphere",
+      "dimensions": {
+        "outer_radius": 21,
+        "inner_radius": 17
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "TITANIUM_GR5"
+    },
+    "boundary_conditions": [
+      {
+        "type": "symmetry",
+        "location": {
+          "method": "descriptor",
+          "value": "right_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 300,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "top_right_corner"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "description": "Modeling a titanium sphere with symmetry boundary conditions and a downward force applied at the top right corner.",
+    "geometry": {
+      "type": "sphere",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "radius": 21,
+        "wall_thickness": 4
+      }
+    },
+    "material": {
+      "type": "TITANIUM_GR5"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Symmetry",
+        "type": "symmetry",
+        "location": {
+          "method": "axis_face",
+          "axis": "x",
+          "position": "max"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Downward_Force",
+        "type": "force",
+        "magnitude": 300,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "top_right_corner"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.7894736842105263,
+    "item_f1": 0.7368421052631579,
+    "tree_edit_similarity": 0.8932038834951457
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Model an L-bracket made of brass. The vertical leg is 150mm long and the horizontal leg is 100mm long. Both legs are 50mm wide and 10mm thick. The extrusion depth is also 50mm. Fix the bottom face of the horizontal leg completely. Apply a 200 N-m moment to the top face of the vertical leg, causing it to twist around the Y-axis. Use a fine quadratic tetrahedral mesh.",
+  "expected_json": {
+    "description": "Static analysis of a brass L-bracket under a moment load, fixed at its base.",
+    "geometry": {
+      "type": "l_bracket",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "leg1_length": 150,
+        "leg2_length": 100,
+        "leg1_width": 50,
+        "leg2_width": 50,
+        "thickness": 10,
+        "depth": 50
+      }
+    },
+    "material": {
+      "type": "BRASS"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Fixed Base",
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Twisting Moment",
+        "type": "moment",
+        "magnitude": 200,
+        "direction": [
+          0,
+          1,
+          0
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "top_face"
+        }
+      }
+    ],
+    "mesh": {
+      "element_type": "tet10",
+      "element_size": 5
+    },
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "generated_json": {
+    "description": "Modeling an L-bracket made of brass with a fine quadratic tetrahedral mesh.",
+    "geometry": {
+      "type": "l_bracket",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "leg_length": 150,
+        "horizontal_leg_length": 100,
+        "leg_width": 50,
+        "leg_thickness": 10,
+        "extrusion_depth": 50
+      }
+    },
+    "material": {
+      "type": "BRASS"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Bottom_Face_Fixed",
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Twisting_Moment",
+        "type": "moment",
+        "magnitude": 200,
+        "direction": [
+          0,
+          1,
+          0
+        ],
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "max"
+        }
+      }
+    ],
+    "mesh": {
+      "type": "quadratic_tetrahedron"
+    },
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.6,
+    "item_f1": 0.52,
+    "tree_edit_similarity": 0.8238461538461539
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Perform a torsional analysis on a 600 mm long PETG U-channel oriented along the y-axis. The channel has a height of 50 mm, width of 30 mm, and both web and flange thickness are 3 mm. The end at y_min is constrained against y and z translation and rotation around the x-axis. Apply a twisting moment of 20 N-m about the y-axis to the end face at y_max.",
+  "expected_json": {
+    "description": "Torsional analysis of a PETG U-channel with custom boundary conditions.",
+    "geometry": {
+      "type": "u_channel",
+      "dimensions": {
+        "height": 50,
+        "width": 30,
+        "length": 600,
+        "web_thickness": 3,
+        "flange_thickness": 3
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "y"
+      }
+    },
+    "material": {
+      "type": "PETG"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Custom_Support",
+        "type": "custom",
+        "constrained_dofs": [
+          "uy",
+          "uz",
+          "rx"
+        ],
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Torsional_Moment",
+        "type": "moment",
+        "magnitude": 20000,
+        "direction": [
+          0,
+          1,
+          0
+        ],
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "max"
+        }
+      }
+    ],
+    "mesh": {
+      "element_size": 2.5
+    },
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "generated_json": null,
+  "metrics": {
+    "valid_json": false,
+    "schema_match": false,
+    "key_f1": 0.0,
+    "item_f1": 0.0,
+    "tree_edit_similarity": 0.0
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Analyze an L-bracket made of Nylon PA6. The vertical leg is 100mm long and the horizontal leg is 75mm long. Both legs are 50mm deep and 10mm thick. The bracket is fixed along the bottom face of its horizontal leg. Apply a downward shear force of 250N distributed over the top face of the vertical leg.",
+  "expected_json": {
+    "description": "L-bracket made of Nylon PA6 with a fixed horizontal base and a shear force on the vertical leg.",
+    "geometry": {
+      "type": "l_bracket",
+      "dimensions": {
+        "leg1_length": 100,
+        "leg2_length": 75,
+        "leg1_width": 50,
+        "leg2_width": 50,
+        "thickness": 10,
+        "depth": 50
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "NYLON_PA6"
+    },
+    "boundary_conditions": [
+      {
+        "name": "FixedBase",
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "z",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "ShearForce",
+        "type": "force",
+        "magnitude": 250,
+        "direction": [
+          0,
+          -1,
+          0
+        ],
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "max"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    },
+    "mesh": {
+      "element_type": "tet10",
+      "element_size": 2.5
+    }
+  },
+  "generated_json": {
+    "description": "Analyze an L-bracket made of Nylon PA6 for shear forces.",
+    "geometry": {
+      "type": "l_bracket",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "vertical_leg_length": 100,
+        "horizontal_leg_length": 75,
+        "leg_depth": 50,
+        "leg_thickness": 10
+      }
+    },
+    "material": {
+      "type": "NYLON_PA6"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Fixed_End",
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "max"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "ShearForce",
+        "type": "distributed_force",
+        "magnitude": 250,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "top_face"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.6938775510204082,
+    "item_f1": 0.4489795918367347,
+    "tree_edit_similarity": 0.8061679790026246
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "A 1-meter long cantilevered T-section beam is made of 2024 aluminum alloy. The cross-section has a flange width of 80mm, a web height of 100mm, a flange thickness of 10mm, and a web thickness of 8mm. The beam is fixed at x=0. A downward point force of 5 kN is applied to the top surface of the flange at the free end, centered on the flange's width.",
+  "expected_json": {
+    "description": "Cantilever T-section beam made of Aluminum 2024 with a point load at the free end.",
+    "geometry": {
+      "type": "t_section",
+      "dimensions": {
+        "flange_width": 80,
+        "web_height": 100,
+        "length": 1000,
+        "web_thickness": 8,
+        "flange_thickness": 10
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "x"
+      }
+    },
+    "material": {
+      "type": "ALUMINUM_2024"
+    },
+    "boundary_conditions": [
+      {
+        "name": "CantileverFix",
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "x",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "TipLoad",
+        "type": "force",
+        "magnitude": 5000,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "near_point",
+          "point": [
+            1000,
+            0,
+            55
+          ],
+          "tolerance": 5
+        }
+      }
+    ],
+    "mesh": {
+      "element_type": "hex20",
+      "element_size": 15
+    },
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "generated_json": {
+    "description": "Cantilevered T-section beam under downward point load, fixed at one end.",
+    "geometry": {
+      "type": "t_section",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "flange_width": 80,
+        "web_height": 100,
+        "length": 1000,
+        "web_thickness": 8,
+        "flange_thickness": 10
+      }
+    },
+    "material": {
+      "type": "ALUMINUM_2024"
+    },
+    "boundary_conditions": [
+      {
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "x",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 5000,
+        "direction": [
+          0,
+          -1,
+          0
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "top_flange_center"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.8627450980392157,
+    "item_f1": 0.7058823529411765,
+    "tree_edit_similarity": 0.8636363636363636
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Generate a cone geometry using abs with 17mm base radius, pointed tip, and 118mm height. Apply fix the top face and apply 1.5mpa pressure on the inner surface.",
+  "expected_json": {
+    "geometry": {
+      "type": "cone",
+      "dimensions": {
+        "bottom_radius": 17,
+        "top_radius": 0,
+        "height": 118
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "ABS"
+    },
+    "boundary_conditions": [
+      {
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "top_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 1500000,
+        "location": {
+          "method": "descriptor",
+          "value": "inner_surface"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "description": "Cone geometry with ABS material, fixed top face, and applied pressure load.",
+    "geometry": {
+      "type": "cone",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "base_radius": 17,
+        "height": 118
+      }
+    },
+    "material": {
+      "type": "ABS"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Top_Face_Fix",
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "top_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Inner_Surface_Pressure",
+        "type": "pressure",
+        "magnitude": 1500000,
+        "location": {
+          "method": "descriptor",
+          "value": "inner_surface"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.875,
+    "item_f1": 0.875,
+    "tree_edit_similarity": 0.9325842696629214
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Model a solid PA6 Nylon cylinder with a 30mm radius and 120mm height. The bottom circular face is restrained from moving in X and Y, but is free to move in Z. A torsional moment of 50 N-m is applied to the top face.",
+  "expected_json": {
+    "description": "Nylon cylinder with a custom sliding base constraint, subjected to torsion on the top face.",
+    "geometry": {
+      "type": "cylinder",
+      "dimensions": {
+        "outer_radius": 30,
+        "height": 120,
+        "inner_radius": 0
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "NYLON_PA6"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Sliding Base",
+        "type": "custom",
+        "constrained_dofs": [
+          "ux",
+          "uy"
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Torsion",
+        "type": "moment",
+        "magnitude": 50,
+        "direction": [
+          0,
+          0,
+          1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "top_face"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "generated_json": {
+    "description": "Solid PA6 Nylon cylinder with a 30mm radius and 120mm height. Bottom face restrained in X and Y, free to move in Z. Torsional moment of 50 N-m applied to top face.",
+    "geometry": {
+      "type": "cylinder",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "radius": 30,
+        "height": 120
+      }
+    },
+    "material": {
+      "type": "PA6_NYLON"
+    },
+    "boundary_conditions": [
+      {
+        "name": "BottomFace",
+        "type": "fixed",
+        "location": {
+          "method": "coordinates",
+          "point": [
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "TorsionalMoment",
+        "type": "torque",
+        "magnitude": 50,
+        "direction": {
+          "x": 0,
+          "y": 0,
+          "z": -1
+        },
+        "location": {
+          "method": "coordinates",
+          "point": [
+            0,
+            0,
+            120
+          ]
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.5777777777777777,
+    "item_f1": 0.35555555555555557,
+    "tree_edit_similarity": 0.7520661157024793
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Design a cfrp cone (16mm base radius, pointed tip, and 108mm height). Apply symmetry boundary condition at the bottom face and apply 500N upward force at the center point.",
+  "expected_json": {
+    "geometry": {
+      "type": "cone",
+      "dimensions": {
+        "bottom_radius": 16,
+        "top_radius": 0,
+        "height": 108
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "CFRP"
+    },
+    "boundary_conditions": [
+      {
+        "type": "symmetry",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 500,
+        "direction": [
+          0,
+          0,
+          1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "center_point"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "geometry": {
+      "type": "cone",
+      "base_radius": 16,
+      "height": 108,
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "CFRP"
+    },
+    "boundary_conditions": [
+      {
+        "type": "symmetry",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 500,
+        "direction": {
+          "x": 0,
+          "y": 0,
+          "z": -1
+        },
+        "location": {
+          "method": "descriptor",
+          "value": "center_point"
+        }
+      }
+    ]
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.7027027027027027,
+    "item_f1": 0.7027027027027027,
+    "tree_edit_similarity": 0.9191919191919192
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Build a sphere from aluminum 7075 with dimensions 12mm outer radius, 2mm wall thickness. Symmetry constraint at the top left corner and 4.0MPa pressure at right face.",
+  "expected_json": {
+    "geometry": {
+      "type": "sphere",
+      "dimensions": {
+        "outer_radius": 12,
+        "inner_radius": 10
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "ALUMINUM_7075"
+    },
+    "boundary_conditions": [
+      {
+        "type": "symmetry",
+        "location": {
+          "method": "descriptor",
+          "value": "top_left_corner"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 4000000,
+        "location": {
+          "method": "descriptor",
+          "value": "right_face"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "geometry": {
+      "type": "sphere",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "radius": 12,
+        "wall_thickness": 2
+      }
+    },
+    "material": {
+      "type": "ALUMINUM_7075"
+    },
+    "boundary_conditions": [
+      {
+        "type": "symmetry",
+        "location": {
+          "method": "descriptor",
+          "value": "top_left_corner"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 4000000,
+        "location": {
+          "method": "descriptor",
+          "value": "right_face"
+        }
+      }
+    ]
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.8666666666666667,
+    "item_f1": 0.8666666666666667,
+    "tree_edit_similarity": 0.9642857142857143
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Analyze a cantilevered I-beam made from Grade 5 Titanium. The beam is 1 meter long, has a flange width of 100 mm, a web height of 150 mm, a web thickness of 6 mm, and a flange thickness of 10 mm. The primary axis is along its length. One end is fully fixed. Apply a 5000 N downward point force to the center of the top flange at the free end. This will be a static analysis.",
+  "expected_json": {
+    "description": "Static analysis of a cantilevered Titanium Grade 5 I-beam under a point load.",
+    "geometry": {
+      "type": "i_beam",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "x"
+      },
+      "dimensions": {
+        "length": 1000,
+        "flange_width": 100,
+        "web_height": 150,
+        "web_thickness": 6,
+        "flange_thickness": 10
+      }
+    },
+    "material": {
+      "type": "TITANIUM_GR5"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Fixed End",
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "x",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Downward Force",
+        "type": "force",
+        "magnitude": 5000,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "coordinates",
+          "point": [
+            1000,
+            0,
+            80
+          ]
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    },
+    "mesh": {
+      "element_type": "tet10",
+      "element_size": 10
+    }
+  },
+  "generated_json": {
+    "description": "Analyze a cantilevered I-beam made from Grade 5 Titanium.",
+    "geometry": {
+      "type": "i_section",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "flange_width": 100,
+        "web_height": 150,
+        "length": 1000,
+        "web_thickness": 6,
+        "flange_thickness": 10
+      }
+    },
+    "material": {
+      "type": "TITANIUM_GRADE_5"
+    },
+    "boundary_conditions": [
+      {
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "z",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 5000,
+        "direction": {
+          "x": 0,
+          "y": 0,
+          "z": -1
+        },
+        "location": {
+          "method": "coordinates",
+          "point": [
+            0,
+            0,
+            500
+          ]
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.8461538461538461,
+    "item_f1": 0.6153846153846154,
+    "tree_edit_similarity": 0.8974814814814814
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Create a rubber silicone cone with 38mm base radius, pointed tip, and 63mm height. Apply roller support at the bottom right corner and apply 400N downward force at the bottom right corner.",
+  "expected_json": {
+    "geometry": {
+      "type": "cone",
+      "dimensions": {
+        "bottom_radius": 38,
+        "top_radius": 0,
+        "height": 63
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "RUBBER_SILICONE"
+    },
+    "boundary_conditions": [
+      {
+        "type": "roller",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_right_corner"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 400,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_right_corner"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "geometry": {
+      "type": "cone",
+      "base_radius": 38,
+      "height": 63,
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "rubber_silicone"
+    },
+    "boundary_conditions": [
+      {
+        "type": "roller",
+        "location": {
+          "method": "coordinates",
+          "point": [
+            -38,
+            -38,
+            0
+          ]
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 400,
+        "direction": {
+          "x": 0,
+          "y": 0,
+          "z": -1
+        },
+        "location": {
+          "method": "coordinates",
+          "point": [
+            -38,
+            -38,
+            0
+          ]
+        }
+      }
+    ]
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.5365853658536586,
+    "item_f1": 0.3902439024390244,
+    "tree_edit_similarity": 0.7798165137614679
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Create a rubber natural sphere with 18mm radius. Apply roller support at the left face and apply 5.0MPa pressure on the bottom face.",
+  "expected_json": {
+    "geometry": {
+      "type": "sphere",
+      "dimensions": {
+        "outer_radius": 18,
+        "inner_radius": 0
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "RUBBER_NATURAL"
+    },
+    "boundary_conditions": [
+      {
+        "type": "roller",
+        "location": {
+          "method": "descriptor",
+          "value": "left_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 5000000,
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "geometry": {
+      "type": "sphere",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "radius": 18
+      }
+    },
+    "material": {
+      "type": "rubber"
+    },
+    "boundary_conditions": [
+      {
+        "type": "roller",
+        "location": {
+          "method": "descriptor",
+          "value": "left_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 5000000,
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ]
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.896551724137931,
+    "item_f1": 0.8275862068965517,
+    "tree_edit_similarity": 0.9512195121951219
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Create a titanium gr5 cylinder with 18mm radius and 124mm height. Apply symmetry boundary condition at the top center point and apply 600N backward force at the back face.",
+  "expected_json": {
+    "geometry": {
+      "type": "cylinder",
+      "dimensions": {
+        "outer_radius": 18,
+        "height": 124,
+        "inner_radius": 0
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "TITANIUM_GR5"
+    },
+    "boundary_conditions": [
+      {
+        "type": "symmetry",
+        "location": {
+          "method": "descriptor",
+          "value": "top_center_point"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 600,
+        "direction": [
+          0,
+          -1,
+          0
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "back_face"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "description": "Tapered titanium cylinder with 18mm radius and 124mm height, applying symmetry and force boundary conditions.",
+    "geometry": {
+      "type": "cylinder",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "radius": 18,
+        "height": 124
+      }
+    },
+    "material": {
+      "type": "TITANIUM_GR5"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Symmetry",
+        "type": "symmetry",
+        "location": {
+          "method": "coordinates",
+          "point": [
+            0,
+            0,
+            62
+          ]
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Force",
+        "type": "force",
+        "magnitude": 600,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "back_face"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.8,
+    "item_f1": 0.65,
+    "tree_edit_similarity": 0.8518518518518519
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "A solid concrete pyramid with a square base of 2 meters by 2 meters and a height of 3 meters is resting on the ground. Model its static response under its own weight. The base should be considered fully fixed to the ground. Gravity is 9.81 m/s^2 acting in the negative Z direction.",
+  "expected_json": {
+    "description": "Static analysis of a concrete pyramid under self-weight.",
+    "geometry": {
+      "type": "pyramid",
+      "origin": {
+        "x": -1000,
+        "y": -1000,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "base_length": 2000,
+        "base_width": 2000,
+        "height": 3000
+      }
+    },
+    "material": {
+      "type": "CONCRETE"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Fixed Foundation",
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Gravity",
+        "type": "gravity",
+        "magnitude": 9.81,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "entire_volume"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "generated_json": {
+    "description": "Static analysis of a solid concrete pyramid under its own weight, with a fully fixed base.",
+    "geometry": {
+      "type": "pyramid",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "base_length": 2000,
+        "height": 3000
+      }
+    },
+    "material": {
+      "type": "CONCRETE"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Fully_Fixed_Base",
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "z",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Gravity",
+        "type": "gravity",
+        "magnitude": 9.81,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "entire_volume"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.9,
+    "item_f1": 0.75,
+    "tree_edit_similarity": 0.9166666666666666
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Design a mild steel box 70mm x 50mm x 30mm. Fix the left and right faces and apply 2 MPa pressure on the top.",
+  "expected_json": {
+    "geometry": {
+      "type": "box",
+      "dimensions": {
+        "length": 70,
+        "width": 50,
+        "height": 30
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "STEEL_MILD"
+    },
+    "boundary_conditions": [
+      {
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "left_face"
+        }
+      },
+      {
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "right_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 2000000,
+        "location": {
+          "method": "descriptor",
+          "value": "top_face"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "description": "Mild steel box design with fixed faces and applied pressure.",
+    "geometry": {
+      "type": "box",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "length": 70,
+        "width": 50,
+        "height": 30
+      }
+    },
+    "material": {
+      "type": "STEEL"
+    },
+    "boundary_conditions": [
+      {
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "x",
+          "position": "min"
+        }
+      },
+      {
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "x",
+          "position": "max"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 2000000,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "axis_face",
+          "axis": "y",
+          "position": "max"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.7111111111111111,
+    "item_f1": 0.5333333333333333,
+    "tree_edit_similarity": 0.7833333333333333
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Generate a box geometry using aluminum 2024 with 97mm x 69mm x 27mm. Apply apply roller support at the bottom center point and apply 0.8mpa pressure on the outer surface.",
+  "expected_json": {
+    "geometry": {
+      "type": "box",
+      "dimensions": {
+        "length": 97,
+        "width": 69,
+        "height": 27
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "ALUMINUM_2024"
+    },
+    "boundary_conditions": [
+      {
+        "type": "roller",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_center_point"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 800000,
+        "location": {
+          "method": "descriptor",
+          "value": "outer_surface"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "geometry": {
+      "type": "box",
+      "dimensions": {
+        "length": 97,
+        "width": 69,
+        "height": 27
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "ALUMINUM_2024"
+    },
+    "boundary_conditions": [
+      {
+        "type": "roller",
+        "location": {
+          "method": "coordinates",
+          "point": [
+            0,
+            0,
+            -27
+          ]
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 800000,
+        "location": {
+          "method": "descriptor",
+          "value": "entire_surface"
+        }
+      }
+    ]
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": true,
+    "key_f1": 0.8823529411764706,
+    "item_f1": 0.7647058823529411,
+    "tree_edit_similarity": 0.9032258064516129
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Model a cone made of steel stainless 316. Dimensions: 31mm base radius, pointed tip, and 111mm height. Fix the bottom face. apply 1.5MPa pressure on the inner surface.",
+  "expected_json": {
+    "geometry": {
+      "type": "cone",
+      "dimensions": {
+        "bottom_radius": 31,
+        "top_radius": 0,
+        "height": 111
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "STEEL_STAINLESS_316"
+    },
+    "boundary_conditions": [
+      {
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 1500000,
+        "location": {
+          "method": "descriptor",
+          "value": "inner_surface"
+        }
+      }
+    ]
+  },
+  "generated_json": null,
+  "metrics": {
+    "valid_json": false,
+    "schema_match": false,
+    "key_f1": 0.0,
+    "item_f1": 0.0,
+    "tree_edit_similarity": 0.0
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Create a titanium grade 5 cone with 19mm base, 3mm top, and 61mm height. Fix the base and apply 115N compressive load.",
+  "expected_json": {
+    "geometry": {
+      "type": "cone",
+      "dimensions": {
+        "bottom_radius": 19,
+        "top_radius": 3,
+        "height": 61
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "TITANIUM_GR5"
+    },
+    "boundary_conditions": [
+      {
+        "type": "fixed",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "force",
+        "magnitude": 115,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "top_center_point"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "description": "Tapered cone made of titanium grade 5, with base fixed and subjected to compressive load.",
+    "geometry": {
+      "type": "cone",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "base_radius": 19,
+        "top_radius": 3,
+        "height": 61
+      }
+    },
+    "material": {
+      "type": "TITANIUM_5",
+      "properties": {
+        "elastic_modulus": 111000000000.0,
+        "poissons_ratio": 0.3,
+        "density": 4500.0
+      }
+    },
+    "boundary_conditions": [
+      {
+        "name": "Base_Fixed",
+        "type": "fixed",
+        "location": {
+          "method": "axis_face",
+          "axis": "z",
+          "position": "max"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Compressive_Load",
+        "type": "force",
+        "magnitude": 115,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.7906976744186046,
+    "item_f1": 0.6511627906976745,
+    "tree_edit_similarity": 0.8421052631578947
+  }
+}
+---
+{
+  "num_shots": 3,
+  "prompt": "Generate a sphere geometry using wood oak with 38mm radius. Apply apply roller support at the bottom face and apply 1.0mpa pressure on the inner surface.",
+  "expected_json": {
+    "geometry": {
+      "type": "sphere",
+      "dimensions": {
+        "outer_radius": 38,
+        "inner_radius": 0
+      },
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      }
+    },
+    "material": {
+      "type": "WOOD_OAK"
+    },
+    "boundary_conditions": [
+      {
+        "type": "roller",
+        "location": {
+          "method": "descriptor",
+          "value": "bottom_face"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "type": "pressure",
+        "magnitude": 1000000,
+        "location": {
+          "method": "descriptor",
+          "value": "inner_surface"
+        }
+      }
+    ]
+  },
+  "generated_json": {
+    "description": "Wood oak sphere with roller support and internal pressure load.",
+    "geometry": {
+      "type": "sphere",
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": {
+        "primary_axis": "z"
+      },
+      "dimensions": {
+        "radius": 38
+      }
+    },
+    "material": {
+      "type": "WOOD_OAK"
+    },
+    "boundary_conditions": [
+      {
+        "name": "Roller_Support",
+        "type": "roller",
+        "location": {
+          "method": "axis_face",
+          "axis": "z",
+          "position": "min"
+        }
+      }
+    ],
+    "loads": [
+      {
+        "name": "Inner_Pressure",
+        "type": "pressure",
+        "magnitude": 1000000,
+        "location": {
+          "method": "descriptor",
+          "value": "inner_surface"
+        }
+      }
+    ],
+    "analysis": {
+      "type": "static"
+    }
+  },
+  "metrics": {
+    "valid_json": true,
+    "schema_match": false,
+    "key_f1": 0.7741935483870968,
+    "item_f1": 0.7096774193548387,
+    "tree_edit_similarity": 0.8735632183908046
+  }
+}
+---
