@@ -1,45 +1,35 @@
-# feaparser
-steps
+# ICL Evaluation Package
 
-1. Download qwen-coder-3b and place it into the folder neamed models in your base directory. Also keep TrainingExamples_900.jsonl and comprehensive_fea_schema.json in your base directory 
+This package contains scripts and data for evaluating In-Context Learning (ICL) performance on Finite Element Analysis (FEA) tasks.
 
-    example downloaded from huggingface account
+## Contents
+- `icl_evaluation_advanced.py`: Main evaluation script using advanced metrics (Tree Edit Distance, F1).
+- `analyze_and_compare.py`: Visualization tools.
+- `train_data.jsonl`: Training data (used for ICL few-shot examples).
+- `test_data.jsonl`: Test data (held-out set for evaluation).
+- `comprehensive_fea_schema.json`: JSON schema for validation.
 
-    from transformers import AutoModelForCausalLM, AutoTokenizer
-    from huggingface_hub import snapshot_download
-    import torch
-    
-    model_name = "Qwen/Qwen2.5-Coder-3B-Instruct"
-    local_model_dir = "./models/qwen-coder-3b"
-    
-    # Create directory
-    Path(local_model_dir).mkdir(parents=True, exist_ok=True)
-    
-    print(f"\n📥 Downloading {model_name}...")
-    print(f"📂 Saving to: {local_model_dir}")
+## Setup
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-2. Run 2_prepare_training_data.py (it adds schema from comprehensive_fea_schema.json and adds ome more instructions in pre prompt the add prompts and pair it with corresponding output json)
+## Usage
+Run the evaluation script:
+```bash
+python icl_evaluation_advanced.py
+```
 
-3. Run python 3_finetune_model.py (LORA and 4 bit quantization so 4GB ram should be enough)
+This will:
+1. Load the model (`Qwen/Qwen2.5-Coder-3B` from Hugging Face).
+2. Evaluate 0, 1, 3, 5, 7-shot performance.
+3. Save results to `icl_results_base/`.
 
-4. Run fixed_inference_test.py
-
-5 
-
-This is just starter script may have lots of bugs. 
-
-This should do fine tuning. in fine tuning we are pre processing every prompt to json pair first. Our inputs include both schema and english prompt. 
-
-Training example:
-System: [Full FEA Schema]
-Input: "Create a steel cylinder 20mm radius, 100mm tall"
-Output: {"geometry": {"type": "cylinder", ...}}
-
-
-We currently have 900 examples. 720 are used for training. 
-
-
-Details of base model Qwen2.5 and why i started with this model.model_name
- 1. Good Context length (32,768 tokens) this way we can add full schema, additional instructions and may be few shots later if required.
- 2. Base model is trainind on engineering and scientific data.
- 3. Small enough to train faster and locally. Also faster for inference time.
+## Metrics
+The script calculates:
+- **Valid JSON Rate**: % of outputs that are valid JSON.
+- **Schema Match Rate**: % of outputs matching the FEA schema.
+- **Key F1**: Structural accuracy (keys).
+- **Item F1**: Content accuracy (values).
+- **Tree Edit Similarity**: Structural similarity score (0-1).
