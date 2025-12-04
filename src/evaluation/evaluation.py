@@ -213,10 +213,10 @@ def calculate_eval_metrics(true_spec_string, pred_spec_string, schema):
 def main():
 	import jsonref
 
-	with open("comprehensive_fea_schema.json", "r", encoding="utf-8") as file:
+	with open("data/simulation_schema.json", "r", encoding="utf-8") as file:
 		schema = jsonref.load(file)
 
-	with open("evaluation/spec_comparison_pairs.json", "r", encoding="utf-8") as file:
+	with open("src/evaluation/spec_comparison_pairs.json", "r", encoding="utf-8") as file:
 		pairs = json.load(file)
 
 	for pair in pairs:
