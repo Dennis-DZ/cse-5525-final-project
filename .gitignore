@@ -1,3 +1,6 @@
 .envrc
 shell.nix
 .direnv
+__pycache__
+input
+output
