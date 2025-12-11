@@ -1,6 +1,13 @@
-from transformers import PreTrainedTokenizerFast, PreTrainedModel, AutoModelForCausalLM, AutoTokenizer
+from transformers import (
+	PreTrainedTokenizerFast,
+	PreTrainedModel,
+	AutoModelForCausalLM,
+	AutoTokenizer,
+	GenerationMixin
+)
 from src.data_loader import DataExample
 from src.utils import safe_open
+from typing import cast
 import torch.cuda
 import logging
 import json
@@ -29,7 +36,7 @@ def prompt_model(
 	end_event = torch.cuda.Event(enable_timing=True)
 
 	start_event.record()
-	generated_ids = model.generate(
+	generated_ids = cast(GenerationMixin, model).generate(
 		**model_inputs,
 		max_new_tokens=1024
 	)
@@ -38,12 +45,12 @@ def prompt_model(
 	torch.cuda.synchronize()
 	time_ms = start_event.elapsed_time(end_event)
 
-	generated_ids = [
+	new_generated_ids = [
 		output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
 	]
-	num_tokens = len(generated_ids[0])
+	num_tokens = len(new_generated_ids[0])
 
-	response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+	response = tokenizer.batch_decode(new_generated_ids, skip_special_tokens=True)[0]
 
 	return response, num_tokens, time_ms
 

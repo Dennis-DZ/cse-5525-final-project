@@ -1,4 +1,4 @@
-import zss
+import zss # type: ignore
 import numbers
 import json
 import jsonschema
@@ -211,7 +211,7 @@ def calculate_eval_metrics(true_spec_string, pred_spec_string, schema):
 	return scores
 
 def main():
-	import jsonref
+	import jsonref # type: ignore
 
 	with open("data/simulation_schema.json", "r", encoding="utf-8") as file:
 		schema = jsonref.load(file)
