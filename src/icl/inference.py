@@ -5,9 +5,10 @@ from transformers import (
 	AutoTokenizer,
 	GenerationMixin
 )
-from src.data_loader import DataExample
+from src.data_loader import DataExample, InferenceOutput
 from src.utils import safe_open
 from typing import cast
+from dataclasses import asdict
 import torch.cuda
 import logging
 import json
@@ -92,7 +93,7 @@ def run_inference(
 		user_prompt = user_prompt_template.replace("%new_prompt%", test_data_example.prompt)
 		response, num_tokens, time = prompt_model(model, tokenizer, system_prompt, user_prompt)
 
-		output = dict(
+		output = InferenceOutput(
 			nl_prompt=test_data_example.prompt,
 			true_spec=test_data_example.spec,
 			pred_spec=response,
@@ -101,7 +102,7 @@ def run_inference(
 		)
 
 		with open(output_path, "a") as file:
-			json.dump(output, file)
+			json.dump(asdict(output), file)
 			file.write("\n")
 
 	logger.info("Finished ICL inference")

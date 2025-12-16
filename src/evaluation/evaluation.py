@@ -1,7 +1,9 @@
+from src.data_loader import EvaluationOutput
 import zss # type: ignore
 import numbers
 import json
 import jsonschema
+import logging
 
 class Tree:
 	def __init__(self, label, is_value=False):
@@ -166,35 +168,36 @@ def key_and_item_f1(true_tree, pred_tree):
 		}
 	}
 
-def calculate_eval_metrics(true_spec_string, pred_spec_string, schema):
-
-	scores = {}
+def calculate_eval_metrics(true_spec_string, pred_spec_string, schema) -> EvaluationOutput:
+	logger = logging.getLogger("__main__")
+	scores = EvaluationOutput()
 
 	try:
 		true_spec = json.loads(true_spec_string)
 	except json.JSONDecodeError:
-		print("Error: true spec isn't valid JSON")
-		print(true_spec_string)
+		logger.error(f"True spec isn't valid JSON\n{true_spec_string}")
 		return scores
 
 	try:
 		pred_spec = json.loads(pred_spec_string)
-		scores['valid_json'] = True
+		scores.valid_json = True
 	except json.JSONDecodeError:
-		scores['valid_json'] = False
+		scores.valid_json = False
 		return scores
 
 	try:
 		jsonschema.validate(true_spec, schema)
 	except jsonschema.ValidationError as error:
-		print(f"Error: true spec doesn't match schema: {error.message}")
-		print(error.instance)
+		logger.error(f"True spec doesn't match schema: {error.message}\n{error.instance}")
 
 	try:
 		jsonschema.validate(pred_spec, schema)
-		scores['schema_match'] = True
-	except jsonschema.ValidationError:
-		scores['schema_match'] = False
+		scores.schema_match = True
+	except jsonschema.ValidationError as error:
+		scores.schema_match = False
+		scores.schema_error_message = error.message
+		print(error.schema_path)
+		scores.schema_error_path = ".".join(str(x) for x in error.schema_path)
 
 	true_tree = build_tree(true_spec, "root", schema)
 	pred_tree = build_tree(pred_spec, "root", schema)
@@ -202,16 +205,22 @@ def calculate_eval_metrics(true_spec_string, pred_spec_string, schema):
 	f1_scores = key_and_item_f1(true_tree, pred_tree)
 	similarity, distance = tree_edit_distance(true_tree, pred_tree)
 
-	scores.update(f1_scores)
-	scores['tree_edit'] = {
-		"similarity": similarity,
-		"distance": distance
-	}
+	scores.key_f1 = f1_scores["key"]["f1"]
+	scores.key_precision = f1_scores["key"]["precision"]
+	scores.key_recall = f1_scores["key"]["recall"]
+
+	scores.item_f1 = f1_scores["item"]["f1"]
+	scores.item_precision = f1_scores["item"]["precision"]
+	scores.item_recall = f1_scores["item"]["recall"]
+
+	scores.tree_edit_similarity = similarity
+	scores.tree_edit_distance = distance
 
 	return scores
 
 def main():
 	import jsonref # type: ignore
+	from dataclasses import asdict
 
 	with open("data/simulation_schema.json", "r", encoding="utf-8") as file:
 		schema = jsonref.load(file)
@@ -222,8 +231,8 @@ def main():
 	for pair in pairs:
 		scores = calculate_eval_metrics(json.dumps(pair["spec1"]), json.dumps(pair["spec2"]), schema)
 		print(pair["description_of_difference"])
-		print(json.dumps(scores, indent=4))
+		print(json.dumps(asdict(scores), indent=4))
 		print()
 
 if __name__ == "__main__":
-		main()
+	main()
