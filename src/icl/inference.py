@@ -82,20 +82,25 @@ def run_inference(
 
 	num_examples = len(test_data)
 
-	with safe_open(output_path, "x") as file:
-		for i, test_data_example in enumerate(test_data):
-			logger.info(f"{i+1}/{num_examples}")
+	with safe_open(output_path, "x"):
+		# Create necessary directories and ensure output_path is a new file
+		pass
 
-			user_prompt = user_prompt_template.replace("%new_prompt%", test_data_example.prompt)
-			response, num_tokens, time = prompt_model(model, tokenizer, system_prompt, user_prompt)
+	for i, test_data_example in enumerate(test_data):
+		logger.info(f"{i+1}/{num_examples}")
 
-			output = dict(
-				nl_prompt=test_data_example.prompt,
-				true_spec=test_data_example.spec,
-				pred_spec=response,
-				num_tokens=num_tokens,
-				inference_time=time,
-			)
+		user_prompt = user_prompt_template.replace("%new_prompt%", test_data_example.prompt)
+		response, num_tokens, time = prompt_model(model, tokenizer, system_prompt, user_prompt)
+
+		output = dict(
+			nl_prompt=test_data_example.prompt,
+			true_spec=test_data_example.spec,
+			pred_spec=response,
+			num_tokens=num_tokens,
+			inference_time=time,
+		)
+
+		with open(output_path, "a") as file:
 			json.dump(output, file)
 			file.write("\n")
 
