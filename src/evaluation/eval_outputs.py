@@ -1,6 +1,6 @@
 from src.data_loader import InferenceOutput, EvaluationOutput
 from src.utils import safe_open
-from src.evaluation.evaluation import calculate_eval_metrics
+from src.evaluation.eval_pair import calculate_eval_metrics
 from dataclasses import asdict
 import logging
 import jsonref # type: ignore

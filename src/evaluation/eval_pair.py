@@ -196,7 +196,6 @@ def calculate_eval_metrics(true_spec_string, pred_spec_string, schema) -> Evalua
 	except jsonschema.ValidationError as error:
 		scores.schema_match = False
 		scores.schema_error_message = error.message
-		print(error.schema_path)
 		scores.schema_error_path = ".".join(str(x) for x in error.schema_path)
 
 	true_tree = build_tree(true_spec, "root", schema)
