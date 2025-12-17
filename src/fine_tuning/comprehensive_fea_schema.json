@@ -1,0 +1,539 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FEA_Complete_Self_Contained_Schema_V5_Final",
+  "description": "Single-file, self-contained FEA schema for LLM training (fine-tuning & ICL). All issues corrected.",
+  "version": "1.2",
+  "type": "object",
+  "required": ["geometry", "material", "boundary_conditions", "loads"],
+  
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Human-readable summary of the FEA model"
+    },
+    
+    "geometry": {
+      "type": "object",
+      "required": ["type", "dimensions", "origin", "orientation"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "box", "cylinder", "sphere", "cone", "pyramid", "tetrahedron",
+            "i_beam", "l_bracket", "u_channel", "t_section",
+            "hemisphere", "torus", "ellipsoid"
+          ]
+        },
+        "origin": {
+          "type": "object",
+          "description": "Base point in global coordinates (mm)",
+          "properties": {
+            "x": { "type": "number", "default": 0 },
+            "y": { "type": "number", "default": 0 },
+            "z": { "type": "number", "default": 0 }
+          },
+          "default": { "x": 0, "y": 0, "z": 0 }
+        },
+        "orientation": {
+          "type": "object",
+          "description": "Primary axis alignment",
+          "properties": {
+            "primary_axis": {
+              "type": "string",
+              "enum": ["x", "y", "z", "-x", "-y", "-z"],
+              "default": "z"
+            }
+          },
+          "default": { "primary_axis": "z" }
+        },
+        "dimensions": {
+          "type": "object",
+          "description": "Geometry-specific dimensions (all in mm). Note: For hollow shapes, inner_radius must be less than outer_radius (validated at runtime)."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "box" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["length", "width", "height"],
+                "properties": {
+                  "length": { "type": "number", "minimum": 0.01, "description": "X dimension" },
+                  "width": { "type": "number", "minimum": 0.01, "description": "Y dimension" },
+                  "height": { "type": "number", "minimum": 0.01, "description": "Z dimension" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "cylinder" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["outer_radius", "height"],
+                "properties": {
+                  "outer_radius": { "type": "number", "minimum": 0.01 },
+                  "inner_radius": { "type": "number", "minimum": 0, "default": 0, "description": "If > 0, creates hollow cylinder (pipe). Must be < outer_radius." },
+                  "height": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "sphere" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["outer_radius"],
+                "properties": {
+                  "outer_radius": { "type": "number", "minimum": 0.01 },
+                  "inner_radius": { "type": "number", "minimum": 0, "default": 0, "description": "If > 0, creates hollow sphere (shell). Must be < outer_radius." }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "cone" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["bottom_radius", "height"],
+                "properties": {
+                  "bottom_radius": { "type": "number", "minimum": 0.01 },
+                  "top_radius": { "type": "number", "minimum": 0, "default": 0, "description": "If 0, creates pointed cone. If > 0, creates truncated cone (frustum)." },
+                  "height": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "pyramid" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["base_length", "base_width", "height"],
+                "properties": {
+                  "base_length": { "type": "number", "minimum": 0.01 },
+                  "base_width": { "type": "number", "minimum": 0.01 },
+                  "height": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "tetrahedron" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["edge_length"],
+                "properties": {
+                  "edge_length": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "hemisphere" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["outer_radius"],
+                "properties": {
+                  "outer_radius": { "type": "number", "minimum": 0.01 },
+                  "inner_radius": { "type": "number", "minimum": 0, "default": 0, "description": "If > 0, creates hollow hemisphere. Must be < outer_radius." }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "torus" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["major_radius", "minor_radius"],
+                "properties": {
+                  "major_radius": { "type": "number", "minimum": 0.01, "description": "Distance from torus center to tube center" },
+                  "minor_radius": { "type": "number", "minimum": 0.01, "description": "Tube radius. Must be < major_radius." }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "ellipsoid" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["radius_x", "radius_y", "radius_z"],
+                "properties": {
+                  "radius_x": { "type": "number", "minimum": 0.01, "description": "Semi-axis along X" },
+                  "radius_y": { "type": "number", "minimum": 0.01, "description": "Semi-axis along Y" },
+                  "radius_z": { "type": "number", "minimum": 0.01, "description": "Semi-axis along Z" }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "i_beam" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["flange_width", "web_height", "length", "web_thickness", "flange_thickness"],
+                "properties": {
+                  "flange_width": { "type": "number", "minimum": 0.01 },
+                  "web_height": { "type": "number", "minimum": 0.01 },
+                  "length": { "type": "number", "minimum": 0.01 },
+                  "web_thickness": { "type": "number", "minimum": 0.01 },
+                  "flange_thickness": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "l_bracket" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["leg1_length", "leg2_length", "leg1_width", "leg2_width", "thickness", "depth"],
+                "properties": {
+                  "leg1_length": { "type": "number", "minimum": 0.01 },
+                  "leg2_length": { "type": "number", "minimum": 0.01 },
+                  "leg1_width": { "type": "number", "minimum": 0.01 },
+                  "leg2_width": { "type": "number", "minimum": 0.01 },
+                  "thickness": { "type": "number", "minimum": 0.01 },
+                  "depth": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "u_channel" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["height", "width", "length", "web_thickness", "flange_thickness"],
+                "properties": {
+                  "height": { "type": "number", "minimum": 0.01 },
+                  "width": { "type": "number", "minimum": 0.01 },
+                  "length": { "type": "number", "minimum": 0.01 },
+                  "web_thickness": { "type": "number", "minimum": 0.01 },
+                  "flange_thickness": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "t_section" } } },
+          "then": {
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "required": ["flange_width", "web_height", "length", "web_thickness", "flange_thickness"],
+                "properties": {
+                  "flange_width": { "type": "number", "minimum": 0.01 },
+                  "web_height": { "type": "number", "minimum": 0.01 },
+                  "length": { "type": "number", "minimum": 0.01 },
+                  "web_thickness": { "type": "number", "minimum": 0.01 },
+                  "flange_thickness": { "type": "number", "minimum": 0.01 }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "material": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "STEEL_MILD", "STEEL_STAINLESS_304", "STEEL_STAINLESS_316", "STEEL_CARBON",
+            "ALUMINUM_6061", "ALUMINUM_7075", "ALUMINUM_2024",
+            "TITANIUM_GR2", "TITANIUM_GR5",
+            "COPPER", "BRASS", "BRONZE",
+            "ABS", "PLA", "PETG", "NYLON_PA6", "NYLON_PA12", "POLYCARBONATE", "POLYPROPYLENE", "PVC",
+            "GLASS_SODA_LIME", "GLASS_BOROSILICATE",
+            "CFRP", "GFRP",
+            "RUBBER_NATURAL", "RUBBER_SILICONE",
+            "WOOD_OAK", "WOOD_PINE",
+            "CONCRETE"
+          ]
+        },
+        "properties": {
+          "type": "object",
+          "description": "Material properties (read-only, auto-populated from database below)",
+          "properties": {
+            "youngs_modulus": { "type": "number", "description": "Young's modulus in MPa" },
+            "poissons_ratio": { "type": "number", "description": "Poisson's ratio (dimensionless, 0 < ν < 0.5)" },
+            "density": { "type": "number", "description": "Density in kg/m³" },
+            "yield_strength": { "type": "number", "description": "Yield strength in MPa" },
+            "ultimate_strength": { "type": "number", "description": "Ultimate tensile strength in MPa" }
+          }
+        }
+      }
+    },
+    
+    "boundary_conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type", "location"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Optional user-defined name for this BC"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["fixed", "pinned", "roller", "symmetry", "custom"],
+            "description": "fixed=all DOFs locked, pinned=translations locked, roller=one translation free, symmetry=mirror plane, custom=specify DOFs"
+          },
+          "constrained_dofs": {
+            "type": "array",
+            "description": "Required only if type='custom'. Specifies which DOFs to lock (zero displacement/rotation)",
+            "items": {
+              "type": "string",
+              "enum": ["ux", "uy", "uz", "rx", "ry", "rz"]
+            },
+            "minItems": 1
+          },
+          "location": {
+            "$ref": "#/definitions/LocationSelector"
+          }
+        },
+        "if": {
+          "properties": { "type": { "const": "custom" } }
+        },
+        "then": {
+          "required": ["constrained_dofs"]
+        }
+      }
+    },
+    
+    "loads": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type", "magnitude", "location"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Optional user-defined name for this load"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["force", "pressure", "moment", "gravity"]
+          },
+          "magnitude": {
+            "type": "number",
+            "description": "Load magnitude: N for force, Pa for pressure, N·m for moment, m/s² for gravity acceleration"
+          },
+          "direction": {
+            "type": "array",
+            "description": "Direction vector [x, y, z]. REQUIRED for force/moment/gravity. Ignored for pressure (auto-computed as surface normal). Will be normalized by solver.",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": { "type": "number" }
+          },
+          "location": {
+            "$ref": "#/definitions/LocationSelector"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": { "enum": ["force", "moment", "gravity"] }
+              }
+            },
+            "then": {
+              "required": ["direction"]
+            }
+          }
+        ]
+      }
+    },
+    
+    "mesh": {
+      "type": "object",
+      "properties": {
+        "element_type": {
+          "type": "string",
+          "enum": ["tet4", "tet10", "hex8", "hex20"],
+          "default": "tet4",
+          "description": "tet4=linear tetrahedral, tet10=quadratic tetrahedral (more accurate)"
+        },
+        "element_size": {
+          "type": "number",
+          "description": "Target element size in mm. Smaller = more accurate but slower.",
+          "minimum": 0.01
+        }
+      }
+    },
+    
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["static", "modal", "thermal", "dynamic"],
+          "default": "static",
+          "description": "static=steady-state stress analysis, modal=vibration modes, thermal=heat transfer, dynamic=time-dependent"
+        }
+      }
+    }
+  },
+  
+  "definitions": {
+    "LocationSelector": {
+      "type": "object",
+      "description": "Specifies where to apply boundary condition or load",
+      "required": ["method"],
+      "oneOf": [
+        {
+          "title": "Semantic Descriptor",
+          "description": "Use predefined location keywords",
+          "properties": {
+            "method": { "const": "descriptor" },
+            "value": {
+              "type": "string",
+              "enum": [
+                "top_face", "bottom_face", "front_face", "back_face", "left_face", "right_face",
+                "inner_surface", "outer_surface",
+                "top_center_point", "bottom_center_point", "center_point",
+                "top_edge", "bottom_edge", "left_edge", "right_edge",
+                "top_left_corner", "top_right_corner", "bottom_left_corner", "bottom_right_corner",
+                "entire_volume", "entire_surface"
+              ]
+            }
+          },
+          "required": ["value"]
+        },
+        {
+          "title": "Axis-Aligned Face",
+          "description": "Select face by axis and position",
+          "properties": {
+            "method": { "const": "axis_face" },
+            "axis": { "type": "string", "enum": ["x", "y", "z"], "description": "Which axis is perpendicular to the face" },
+            "position": { "type": "string", "enum": ["min", "max"], "description": "min=negative end, max=positive end" }
+          },
+          "required": ["axis", "position"]
+        },
+        {
+          "title": "Exact Coordinates",
+          "description": "Specify exact point by coordinates",
+          "properties": {
+            "method": { "const": "coordinates" },
+            "point": {
+              "type": "array",
+              "description": "[x, y, z] in mm",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": { "type": "number" }
+            }
+          },
+          "required": ["point"]
+        },
+        {
+          "title": "Proximity Search",
+          "description": "Find closest entity to specified point within tolerance",
+          "properties": {
+            "method": { "const": "near_point" },
+            "point": {
+              "type": "array",
+              "description": "[x, y, z] in mm",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": { "type": "number" }
+            },
+            "tolerance": {
+              "type": "number",
+              "description": "Search radius in mm",
+              "default": 1.0,
+              "minimum": 0.01
+            }
+          },
+          "required": ["point"]
+        }
+      ]
+    }
+  },
+  
+  "_material_database_reference": {
+    "description": "Built-in material properties for LLM learning. Not validated by schema. System auto-populates material.properties from this data.",
+    "comment": "Format: {material_name: {E: youngs_modulus_MPa, nu: poissons_ratio, rho: density_kg_m3, yield: yield_strength_MPa, ultimate: ultimate_strength_MPa}}",
+    "materials": {
+      "STEEL_MILD": { "E": 200000, "nu": 0.29, "rho": 7850, "yield": 250, "ultimate": 400 },
+      "STEEL_STAINLESS_304": { "E": 193000, "nu": 0.29, "rho": 8000, "yield": 215, "ultimate": 505 },
+      "STEEL_STAINLESS_316": { "E": 193000, "nu": 0.27, "rho": 8000, "yield": 205, "ultimate": 515 },
+      "STEEL_CARBON": { "E": 210000, "nu": 0.30, "rho": 7850, "yield": 380, "ultimate": 550 },
+      "ALUMINUM_6061": { "E": 68900, "nu": 0.33, "rho": 2700, "yield": 276, "ultimate": 310 },
+      "ALUMINUM_7075": { "E": 71700, "nu": 0.33, "rho": 2810, "yield": 503, "ultimate": 572 },
+      "ALUMINUM_2024": { "E": 73100, "nu": 0.33, "rho": 2780, "yield": 345, "ultimate": 483 },
+      "TITANIUM_GR2": { "E": 102700, "nu": 0.34, "rho": 4510, "yield": 275, "ultimate": 345 },
+      "TITANIUM_GR5": { "E": 113800, "nu": 0.342, "rho": 4430, "yield": 880, "ultimate": 950 },
+      "COPPER": { "E": 117000, "nu": 0.34, "rho": 8960, "yield": 70, "ultimate": 220 },
+      "BRASS": { "E": 97000, "nu": 0.34, "rho": 8500, "yield": 125, "ultimate": 340 },
+      "BRONZE": { "E": 110000, "nu": 0.35, "rho": 8800, "yield": 130, "ultimate": 345 },
+      "ABS": { "E": 2300, "nu": 0.35, "rho": 1050, "yield": 40, "ultimate": 46 },
+      "PLA": { "E": 3500, "nu": 0.36, "rho": 1240, "yield": 50, "ultimate": 65 },
+      "PETG": { "E": 2070, "nu": 0.38, "rho": 1270, "yield": 50, "ultimate": 53 },
+      "NYLON_PA6": { "E": 2800, "nu": 0.39, "rho": 1140, "yield": 45, "ultimate": 75 },
+      "NYLON_PA12": { "E": 1600, "nu": 0.40, "rho": 1010, "yield": 42, "ultimate": 60 },
+      "POLYCARBONATE": { "E": 2400, "nu": 0.37, "rho": 1200, "yield": 62, "ultimate": 70 },
+      "POLYPROPYLENE": { "E": 1500, "nu": 0.42, "rho": 900, "yield": 30, "ultimate": 40 },
+      "PVC": { "E": 3000, "nu": 0.38, "rho": 1380, "yield": 40, "ultimate": 52 },
+      "GLASS_SODA_LIME": { "E": 69000, "nu": 0.23, "rho": 2500, "yield": 50, "ultimate": 50 },
+      "GLASS_BOROSILICATE": { "E": 63000, "nu": 0.20, "rho": 2230, "yield": 40, "ultimate": 40 },
+      "CFRP": { "E": 150000, "nu": 0.30, "rho": 1600, "yield": 600, "ultimate": 1000 },
+      "GFRP": { "E": 35000, "nu": 0.27, "rho": 1800, "yield": 250, "ultimate": 400 },
+      "RUBBER_NATURAL": { "E": 50, "nu": 0.48, "rho": 920, "yield": 15, "ultimate": 30 },
+      "RUBBER_SILICONE": { "E": 5, "nu": 0.49, "rho": 1100, "yield": 2, "ultimate": 10 },
+      "WOOD_OAK": { "E": 11000, "nu": 0.35, "rho": 700, "yield": 50, "ultimate": 100 },
+      "WOOD_PINE": { "E": 9000, "nu": 0.35, "rho": 500, "yield": 40, "ultimate": 80 },
+      "CONCRETE": { "E": 25000, "nu": 0.20, "rho": 2400, "yield": 20, "ultimate": 30 }
+    }
+  }
+}
