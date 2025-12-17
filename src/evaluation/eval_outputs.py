@@ -5,6 +5,11 @@ from dataclasses import asdict
 import logging
 import jsonref # type: ignore
 import json
+import re
+
+def extract_json_from_text(text: str) -> str:
+	match = re.search(r"{.*}", text, re.DOTALL)
+	return match.group(0) if match else text
 
 def run_evaluation(
 		inference_outputs: list[InferenceOutput],
@@ -29,9 +34,10 @@ def run_evaluation(
 	for i, inference_output in enumerate(inference_outputs):
 		logger.info(f"{i+1}/{num_outputs}")
 
+		pred_spec = extract_json_from_text(inference_output.pred_spec)
 		output = calculate_eval_metrics(
 			inference_output.true_spec,
-			inference_output.pred_spec,
+			pred_spec,
 			schema
 		)
 

@@ -188,7 +188,7 @@ def calculate_eval_metrics(true_spec_string, pred_spec_string, schema) -> Evalua
 	try:
 		jsonschema.validate(true_spec, schema)
 	except jsonschema.ValidationError as error:
-		logger.error(f"True spec doesn't match schema: {error.message}\n{error.instance}")
+		logger.error(f"True spec doesn't match schema: {error.message}")
 
 	try:
 		jsonschema.validate(pred_spec, schema)
