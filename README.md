@@ -19,3 +19,7 @@ The results from ICL inference can be evaluated with the `evaluate` command (i.e
 ### Fine-Tuning
 
 Unfortunately, due to limited time, the code for fine-tuning models and evaluating them was not incorporated into the main project. Instead, `src/fine_tuning/` holds a self-contained project for doing those things. In that directory, `README_TRAINING.md` contains instructions on how to install dependencies and run the scripts.
+
+## Results
+
+Our fine-tuning checkpoint and inference/evaluation results can be found in the releases.
